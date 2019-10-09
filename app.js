@@ -6,12 +6,12 @@ const geocode = function(city, callback) {
 
     request({ url, json: true }, function(error, response) {
         if (error) {
-            console.log(error.Error)
+            console.log('Error: ' + error.Error)
         } else {
             const data = response.body
 
-            if ( data.Response == 'False' ) {
-                console.log('Error: ' + data.Error)
+            if ( data.features === undefined || data.features.length == 0) {
+                console.log('Error: ' + data.message)
             } else {
                 const info = {
                     coordinates: data.features[0].center,
@@ -30,12 +30,12 @@ const darksky = function(info, callback) {
 
     request({ url, json: true }, function(error, response) {
         if (error) {
-            console.log(error.Error)
+            console.log('Error: ' + error.Error)
         } else {
             const data = response.body
 
-            if ( data.Response == 'False' ) {
-                console.log('Error: ' + data.Error)
+            if ( data.error !== undefined ) {
+                console.log('Error: ' + data.error)
             } else {
                 const phrase = 'The weather in ' + info.city + ':\n' +
                     '\tIt currently is ' + data.currently.summary + ' with a temperature of ' + data.currently.temperature + '°C. ' +
